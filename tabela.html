@@ -1,56 +1,32 @@
 <html>
 <head>
     <title>Tabela Verdade</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>Tabela Verdade</h1>
 <label for="elementos">Coloca as letras (ex: A, B, C): </label>
-<input type="text" id="elementos" placeholder="A, B, C">
 <button onclick="gerarTabela()">Gerar Tabela</button>
-<div id="tabela"></div>
 
-<script>
-function gerarTabela() {
-    const input = document.getElementById("elementos").value;
-    const letras = input.replace(/\s+/g, '').split(',');
-    const tabelaDiv = document.getElementById("tabela");
+<div class="calculator">
+    <div class="display">
+        <textarea type="text" id="elementos" placeholder="A, B, C" rows="10" cols="50"></textarea>
+        <div class="inner-display">
+            
+        </div>
+    </div>
+    <div class="menu">
 
-    if (letras.length === 0 || letras[0] === '') {
-        tabelaDiv.innerHTML = "Coloca a droga da letra";
-        return;
-    }
+    </div>
+    <div class="content">
+        
+    </div>
+    <div class="footer">
+        <h1>Footer</h1>
+        <div id="tabela"></div>
+    </div>
+</div>
 
-    const linhas = Math.pow(2, letras.length);
-    let html = "<table border='1'><thead><tr>";
-
-    //tabela
-    letras.forEach(letra => {
-        html += `<th>${letra}</th>`;
-    });
-    html += `<th>AND</th>`;
-    html += "</tr></thead><tbody>";
-
-    //valores da tabela
-    for (let i = 0; i < linhas; i++) {
-        html += "<tr>";
-        let valores = [];
-
-        for (let j = 0; j < letras.length; j++) {
-            const bit = (i >> (letras.length - j - 1)) & 1;
-            const valor = bit === 1 ? 'F' : 'V';
-            valores.push(valor);
-            html += `<td>${valor}</td>`;
-        }
-
-        //AND
-        const resultadoAND = valores.every(v => v === 'V') ? 'V' : 'F';
-        html += `<td>${resultadoAND}</td>`;
-        html += "</tr>";
-    }
-
-    html += "</tbody></table>";
-    tabelaDiv.innerHTML = html;
-}
-</script>
+<script src="script.js"></script>
 </body>
 </html>
