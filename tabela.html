@@ -37,7 +37,7 @@ function gerarTabela() {
 
         for (let j = 0; j < letras.length; j++) {
             const bit = (i >> (letras.length - j - 1)) & 1;
-            const valor = bit === 1 ? 'V' : 'F';
+            const valor = bit === 1 ? 'F' : 'V';
             valores.push(valor);
             html += `<td>${valor}</td>`;
         }
