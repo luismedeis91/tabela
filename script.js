@@ -1,10 +1,8 @@
-
-
 var button, amt, container;
 const labels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
                   "P","Q","R","S","T","U","V","W","X","Y","Z"];
 
-const operators = ["C","<-","(",")","->","^","<->","v","~","v","V","F","="];
+const operators = ["C","DEL","(",")","->","^","<->","v","~","v","V","F","="];
 
 init();
 
@@ -18,9 +16,9 @@ function initLetters(){
     container = document.querySelector('.content');
     amt.forEach( (element, i) => {
         element.innerText = labels[i];
+        element.addEventListener("click", () => insertValue(labels[i]));
         container.appendChild(element);
-    }
-    );
+    });
 }
 
 function initOperators(){
@@ -28,16 +26,35 @@ function initOperators(){
     container = document.querySelector('.menu');
     amt.forEach( (element, i) => {
         element.innerText = operators[i];
+        element.addEventListener("click", () => handleOperator(operators[i]));
         container.appendChild(element);
+    });
+}
+
+function insertValue(value) {
+    const input = document.querySelector("#elementos");
+    input.value += value;
+}
+
+function handleOperator(op) {
+    const input = document.querySelector("#elementos");
+    if (op === "C") {
+        input.value = ""; //pra limpar toda a caixa de texto
+    } else if (op === "DEL") {
+        input.value = input.value.slice(0, -1); //deletar ultimo caractere colocado
+    } else {
+        insertValue(op);
     }
-    );
 }
 
 function gerarTabela() {
     const input = document.querySelector("#elementos").value;
-    const letras = input.replace(/\s+/g, '').split(',');
+    const letras = input.replace(/[^A-Z]/g, '').split('');
     const tabelaDiv = document.querySelector("#tabela");
+    const temAND = input.includes("^");
+    const temOR = input.includes("v");
 
+    //se a caixa de texto estiver vazia
     if (letras.length === 0 || letras[0] === '') {
         tabelaDiv.innerHTML = "Coloca a droga da letra";
         return;
@@ -46,14 +63,13 @@ function gerarTabela() {
     const linhas = Math.pow(2, letras.length);
     let html = "<table border='1'><thead><tr>";
 
-    //tabela
     letras.forEach(letra => {
         html += `<th>${letra}</th>`;
     });
-    html += `<th>AND</th>`;
+    if (temAND) html += `<th>AND</th>`;
+    if (temOR) html += `<th>OR</th>`;
     html += "</tr></thead><tbody>";
 
-    //valores da tabela
     for (let i = 0; i < linhas; i++) {
         html += "<tr>";
         let valores = [];
@@ -65,9 +81,14 @@ function gerarTabela() {
             html += `<td>${valor}</td>`;
         }
 
-        //AND
-        const resultadoAND = valores.every(v => v === 'V') ? 'V' : 'F';
-        html += `<td>${resultadoAND}</td>`;
+        if (temAND) {
+            const resultadoAND = valores.every(v => v === 'V') ? 'V' : 'F';
+            html += `<td>${resultadoAND}</td>`;
+        }
+        if (temOR) {
+            const resultadoOR = valores.some(v => v === 'V') ? 'V' : 'F';
+            html += `<td>${resultadoOR}</td>`;
+        }
         html += "</tr>";
     }
 
