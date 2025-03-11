@@ -4,6 +4,8 @@ const labels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
 
 const operators = ["C","DEL","(",")","->","^","<->","v","~","v","V","F","="];
 
+var operation = [];
+
 init();
 
 function init(){
@@ -32,19 +34,33 @@ function initOperators(){
 }
 
 function insertValue(value) {
-    const input = document.querySelector("#elementos");
-    input.value += value;
+    operation.push(value);
+
+    updateOperation();
 }
 
 function handleOperator(op) {
     const input = document.querySelector("#elementos");
     if (op === "C") {
-        input.value = ""; //pra limpar toda a caixa de texto
+        operation = [];
+        updateOperation(); //pra limpar toda a caixa de texto
     } else if (op === "DEL") {
-        input.value = input.value.slice(0, -1); //deletar ultimo caractere colocado
-    } else {
+        operation.pop(); //deletar ultimo caractere colocado
+        updateOperation();
+    } else  if (op === "="){
+        gerarTabela();
+    } else{
         insertValue(op);
     }
+}
+
+function updateOperation(){
+    const input = document.querySelector("#elementos");
+    input.value = "";
+
+    operation.forEach( (element) => {
+        input.value += element;
+    })
 }
 
 function gerarTabela() {
