@@ -1,8 +1,8 @@
 var button, amt, container;
 const labels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
-                  "P","Q","R","S","T","U","V","W","X","Y","Z"];
+                "P","Q","R","S","T","U","V","W","X","Y","Z"];
 
-const operators = ["C","DEL","(",")","→","^","↔","v","~","v","V","F","="];
+const operators = ["C","DEL","(",")","→","^","↔","v","~","=","V","F"];
 
 var operation = [];
 
@@ -24,7 +24,7 @@ function initLetters(){
 }
 
 function initOperators(){
-    amt = Array.from( { length: 13 }, () => document.createElement('button') );
+    amt = Array.from( { length: operators.length }, () => document.createElement('button') );
     container = document.querySelector('.menu');
     amt.forEach( (element, i) => {
         element.innerText = operators[i];
@@ -35,48 +35,35 @@ function initOperators(){
 
 function insertValue(value) {
     operation.push(value);
-
     updateOperation();
 }
 
 function handleOperator(op) {
-    const input = document.querySelector("#elementos");
-    switch(op){
-        case "C":
-            operation = [];
-            updateOperation(); //pra limpar toda a caixa de texto
-            break;
-        case "DEL":
-            operation.pop(); //deletar ultimo caractere colocado
-            updateOperation();
-            break;
-        case "=":
-            gerarTabela();break;
-        default:
-            insertValue(op);
-            break;
+    if (op === "C") {
+        operation = [];
+        updateOperation(); 
+    } else if (op === "DEL") {
+        operation.pop(); 
+        updateOperation();
+    } else if (op === "="){
+        gerarTabela();
+    } else {
+        insertValue(op);
     }
 }
 
 function updateOperation(){
     const input = document.querySelector("#elementos");
-    input.value = "";
-
-    operation.forEach( (element) => {
-        input.value += element;
-    })
+    input.value = operation.join('');
 }
 
 function gerarTabela() {
     const input = document.querySelector("#elementos").value;
-    const letras = input.replace(/[^A-Z]/g, '').split('');
+    const letras = [...new Set(input.replace(/[^A-Z]/g, ''))];
     const tabelaDiv = document.querySelector("#tabela");
-    const temAND = input.includes("^");
-    const temOR = input.includes("v");
 
-    //se a caixa de texto estiver vazia
-    if (letras.length === 0 || letras[0] === '') {
-        tabelaDiv.innerHTML = "Coloca a droga da letra";
+    if (letras.length === 0) {
+        tabelaDiv.innerHTML = "Digite uma expressão válida";
         return;
     }
 
@@ -86,30 +73,38 @@ function gerarTabela() {
     letras.forEach(letra => {
         html += `<th>${letra}</th>`;
     });
-    if (temAND) html += `<th>AND</th>`;
-    if (temOR) html += `<th>OR</th>`;
-    html += "</tr></thead><tbody>";
+    html += `<th>Passo a Passo</th><th>Resultado</th></tr></thead><tbody>`;
 
     for (let i = 0; i < linhas; i++) {
+        let valores = {};
         html += "<tr>";
-        let valores = [];
-
+        
         for (let j = 0; j < letras.length; j++) {
             const bit = (i >> (letras.length - j - 1)) & 1;
-            const valor = bit === 1 ? 'F' : 'V';
-            valores.push(valor);
-            html += `<td>${valor}</td>`;
+            valores[letras[j]] = bit === 1 ? 'F' : 'V';
+            html += `<td>${valores[letras[j]]}</td>`;
         }
 
-        if (temAND) {
-            const resultadoAND = valores.every(v => v === 'V') ? 'V' : 'F';
-            html += `<td>${resultadoAND}</td>`;
+        let expressaoOriginal = input;
+        Object.keys(valores).forEach(letra => {
+            expressaoOriginal = expressaoOriginal.replace(new RegExp(letra, 'g'), valores[letra] === 'V' ? 'true' : 'false');
+        });
+
+        let expressaoConvertida = expressaoOriginal.replace(/~/g, '!')
+                                                   .replace(/\^/g, '&&')
+                                                   .replace(/v/g, '||')
+                                                   .replace(/→/g, '<=')
+                                                   .replace(/↔/g, '===');
+
+        let resultado;
+        let passoAPasso = expressaoOriginal;
+        try {
+            resultado = eval(expressaoConvertida) ? 'V' : 'F';
+            passoAPasso = expressaoOriginal + " → " + expressaoConvertida;
+        } catch (e) {
+            resultado = 'Erro';
         }
-        if (temOR) {
-            const resultadoOR = valores.some(v => v === 'V') ? 'V' : 'F';
-            html += `<td>${resultadoOR}</td>`;
-        }
-        html += "</tr>";
+        html += `<td>${passoAPasso}</td><td>${resultado}</td></tr>`;
     }
 
     html += "</tbody></table>";
