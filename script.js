@@ -2,7 +2,17 @@ var button, amt, container;
 const labels = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
                 "P","Q","R","S","T","U","V","W","X","Y","Z"];
 
-const operators = ["C","DEL","(",")","→","^","↔","v","~","=","V","F"];
+const operators = ["C","⇤","(",")","→","⌃","↔","⌄","¬","⊻","V","F","="];
+
+const checkbox = document.getElementById("darkcheckbox");
+checkbox.addEventListener("change", function() {
+    if (this.checked) {
+        document.body.classList.add("dark-mode")
+        document.caculator.classList.add("dark-mode")
+    } else {
+        document.body.classList.remove("dark-mode")
+    }
+});
 
 var operation = [];
 
@@ -52,7 +62,7 @@ function handleOperator(op) {
     if (op === "C") {
         operation = [];
         updateOperation(); 
-    } else if (op === "DEL") {
+    } else if (op === "⇤") {
         operation.pop(); 
         updateOperation();
     } else if (op === "="){
@@ -71,6 +81,8 @@ function gerarTabela() {
     const input = document.querySelector("#elementos").value;
     const letras = [...new Set(input.replace(/[^A-Z]/g, ''))];
     const tabelaDiv = document.querySelector("#tabela");
+
+    
 
     if (letras.length === 0) {
         tabelaDiv.innerHTML = "Digite uma expressão válida";
@@ -100,9 +112,10 @@ function gerarTabela() {
             expressaoOriginal = expressaoOriginal.replace(new RegExp(letra, 'g'), valores[letra] === 'V' ? 'true' : 'false');
         });
 
-        let expressaoConvertida = expressaoOriginal.replace(/~/g, '!')
-                                                   .replace(/\^/g, '&&')
-                                                   .replace(/v/g, '||')
+        let expressaoConvertida = expressaoOriginal.replace(/¬/g, '!')
+                                                   .replace(/\⌃/g, '&&')
+                                                   .replace(/\⊻/g, '^')
+                                                   .replace(/⌄/g, '||')
                                                    .replace(/→/g, '<=')
                                                    .replace(/↔/g, '===');
 
