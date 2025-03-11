@@ -9,12 +9,22 @@ var operation = [];
 init();
 
 function init(){
+    document.querySelector('#elementos').addEventListener('input', (event) => {
+        operation = [];
+        for(var i = 0; i < event.target.value.length; i++){
+            if(labels.includes(event.target.value[i] || operators.includes(event.target.value[i]))){
+                operation.push(event.target.value[i]);
+            }
+        }
+        updateOperation();
+    });
+    
     initLetters();
     initOperators();
 }
 
 function initLetters(){
-    amt = Array.from( { length: 26 }, () => document.createElement('button') );
+    amt = Array.from( { length: labels.length }, () => document.createElement('button') );
     container = document.querySelector('.content');
     amt.forEach( (element, i) => {
         element.innerText = labels[i];
