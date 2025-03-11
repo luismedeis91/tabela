@@ -41,16 +41,20 @@ function insertValue(value) {
 
 function handleOperator(op) {
     const input = document.querySelector("#elementos");
-    if (op === "C") {
-        operation = [];
-        updateOperation(); //pra limpar toda a caixa de texto
-    } else if (op === "DEL") {
-        operation.pop(); //deletar ultimo caractere colocado
-        updateOperation();
-    } else  if (op === "="){
-        gerarTabela();
-    } else{
-        insertValue(op);
+    switch(op){
+        case "C":
+            operation = [];
+            updateOperation(); //pra limpar toda a caixa de texto
+            break;
+        case "DEL":
+            operation.pop(); //deletar ultimo caractere colocado
+            updateOperation();
+            break;
+        case "=":
+            gerarTabela();break;
+        default:
+            insertValue(op);
+            break;
     }
 }
 
