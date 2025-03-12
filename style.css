@@ -1,5 +1,6 @@
 body {
     display: flex;
+    margin: 0px 0px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -10,9 +11,43 @@ body {
     color: white;
 }
 
+.header {
+    width: 100%;
+    height: 100px;
+    display: block;
+    justify-content: left;
+    position: relative;
+    background-color: black;
+}
+
+.innerHeader {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.titleContainer {
+    height: 100%;
+    float: left;
+    display: table;
+}
+
+.title {
+    height: 100%;
+    margin: 0;
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .darkmodecheckbox {
-align-self: self-end;
-flex-direction: column;
+    height: 100%;
+    display: table-cell;
+    float: right;
+    vertical-align: middle;
+    color: white;
 }
 
 .calculator {
