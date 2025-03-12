@@ -95,7 +95,7 @@ function gerarTabela() {
     letras.forEach(letra => {
         html += `<th>${letra}</th>`;
     });
-    html += `<th>Passo a Passo</th><th>Resultado</th></tr></thead><tbody>`;
+    html += `<th>Passo a Passo</th><th>${document.querySelector('#elementos').value}</th></tr></thead><tbody>`;
 
     for (let i = 0; i < linhas; i++) {
         let valores = {};
