@@ -4,6 +4,10 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5; /* cor branca com um toque de cinza */
+    color: black;
+    transition: background 0.5s, color 0.5s;
 }
 
 .dark-mode {
@@ -39,7 +43,7 @@ body {
     display: table-cell;
     vertical-align: middle;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .darkmodecheckbox {
@@ -62,7 +66,17 @@ body {
     grid-template-columns: 4fr 2fr;
     grid-template-rows: 0.5fr fit-content 0.5fr;
     gap: 5px;
-    background-color: black;
+    background: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    transition: background 0.5s;
+}
+
+.dark-mode .calculator {
+    background: rgba(0, 0, 0, 0.8); /* fundo preto no modo escuro */
+    border: 2px solid gray; /* bordas cinzas no modo escuro */
 }
 
 .calculator > div.display {
@@ -137,3 +151,93 @@ body {
     box-shadow: 0px 2px rgba(0, 0, 0, 0.5);
     border: none;
 }
+
+.about-us-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#aboutUsBtn {
+    background-color: #4CAF50; /* Cor verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#aboutUsBtn:hover {
+    background-color: #45a049; /* Cor mais escura ao passar o mouse */
+}
+
+.calculator {
+    width: auto;
+    height: auto;
+    min-height: 400px;
+    display: grid;
+    grid-template-areas: 
+        "display display"
+        "content menu"
+        "footer footer";
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: 0.5fr fit-content 0.5fr;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    transition: background 0.5s;
+}
+
+#aboutUsMessage {
+    display: none; /* Inicialmente escondido */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 30px;
+    max-width: 80%;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 9999; /* Fica por cima da calculadora */
+}
+
+#aboutUsMessage h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#aboutUsMessage p {
+    font-size: 18px;
+    color: #555;
+}
+
+#aboutUsMessage button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#aboutUsMessage button:hover {
+    background-color: #45a049;
+}
+
+
+
+

@@ -132,4 +132,18 @@ function gerarTabela() {
 
     html += "</tbody></table>";
     tabelaDiv.innerHTML = html;
+
+    
+    
+
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const aboutUsBtn = document.getElementById('aboutUsBtn');
+    const aboutUsMessage = document.getElementById('aboutUsMessage');
+
+    aboutUsBtn.addEventListener('click', function() {
+       
+        aboutUsMessage.style.display = aboutUsMessage.style.display === 'none' ? 'block' : 'none';
+    });
+});
+
